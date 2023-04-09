@@ -21,9 +21,9 @@ const initializeDbAndServer = async () => {
   }
 };
 initializeDbAndServer();
-const convertDbObjectToResponseObject = (bdObject) => {
+const convertDbObjectToResponseObject = (dbObject) => {
   return {
-    playerId: bdObject.player_id,
+    playerId: dbObject.player_id,
     playerName: dbObject.player_name,
     jerseyNumber: dbObject.jersey_number,
     role: dbObject.role,
@@ -35,8 +35,8 @@ app.get("/players/", async (request, response) => {
   const playersArray = await database.all(getPlayersQuery);
   response.send(
     playersArray.map((eachPlayer) =>
-      convertDbObjectToResponseObject(eachPlayer)
-    )
+      convertDbObjectToResponseObject(eachPlayer))
+    
   );
 });
 app.get("/players/:playerId/", async (request, response) => {
@@ -51,7 +51,7 @@ app.post("/players/", async (request, response) => {
   const postPlayerQuery = `
     INSERT INTO cricket_team (player_name,jersey_number,role)
     VALUES ('${playerName}',${jerseyNumber},'${role}';`;
-  const player = await database.run(postPlayerQuery);
+  const players = await database.run(postPlayerQuery);
   response.send(`Player Added to Team`);
 });
 app.put("/players/:playerId/", async (request, response) => {
